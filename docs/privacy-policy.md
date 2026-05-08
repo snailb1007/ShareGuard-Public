@@ -37,7 +37,7 @@ No content — original or cleaned — ever leaves your device through ShareGuar
 
 ---
 
-## 3. History Data
+## 3. Data Retention and Deletion
 
 ShareGuard maintains a local history of cleaning operations for your convenience. This history stores **metadata only**:
 
@@ -51,7 +51,8 @@ ShareGuard maintains a local history of cleaning operations for your convenience
 - File names, file paths, or URIs
 - Any data extracted during stripping (GPS coordinates, device info, etc.)
 
-History is automatically purged after 30 days (configurable in Settings). You can manually clear all history at any time.
+**Data Deletion:**
+Because all data is stored exclusively on your device, you have full control over it. History is automatically purged after 30 days (configurable in Settings). You can immediately delete your entire history at any time through the app's Settings menu, or by clearing the app's data in your Android Settings. Uninstalling the app will also permanently delete this history.
 
 ---
 
@@ -76,7 +77,7 @@ ShareGuard requests only the minimum permissions necessary:
 | Permission | Purpose |
 |---|---|
 | `INTERNET` | Download rule updates only |
-| Read shared content (via Share Sheet) | Process content shared by user to strip metadata |
+| Temporary URI Permissions | Granted by Android OS when you share a specific file. Used to process the content. We DO NOT request broad storage access (e.g., `READ_EXTERNAL_STORAGE`). |
 
 ShareGuard does **not** request:
 - Location access
@@ -105,13 +106,19 @@ ShareGuard is designed from the ground up to protect your privacy. While the app
 
 ---
 
-## 9. Changes to This Policy
+## 9. User Rights (GDPR & CCPA)
+
+Under data protection laws like GDPR (Europe) and CCPA (California), users have the right to access, rectify, or delete their personal data. Because ShareGuard **does not collect, store, or transmit any user data**, there is no data on our end to export or delete. You retain 100% control over your data directly on your device.
+
+---
+
+## 10. Changes to This Policy
 
 If we update this privacy policy, the updated version will be posted to this page with a new "Last updated" date. Since ShareGuard collects no data, changes would typically relate to new features or clarifications.
 
 ---
 
-## 10. Contact
+## 11. Contact
 
 For questions or concerns about this privacy policy, please open an issue on our public GitHub repository:
 
