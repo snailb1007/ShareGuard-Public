@@ -1,1 +1,13 @@
-{"version":"2026.05.10","schema_version":1,"expires_at":"2026-08-10","license":"LGPL-3.0","global":{"analytics_strip":[]},"domains":{},"redirect_chains":{},"sacred_params":[],"signature":"oitixBP6SjhaMNP1Head/IlK8nhnfaBo0m14UXpRpt0t+0ErBUq1R+iE0xH0Z/8OtVyup3lWHsoEphGkGQ++Cg=="}
+{
+    "version": "2026.05.10",
+    "schema_version": 1,
+    "expires_at": "2026-08-10",
+    "license": "LGPL-3.0",
+    "global": {
+        "analytics_strip": []
+    },
+    "domains": {},
+    "redirect_chains": {},
+    "sacred_params": [],
+    "signature": "oitixBP6SjhaMNP1Head/IlK8nhnfaBo0m14UXpRpt0t+0ErBUq1R+iE0xH0Z/8OtVyup3lWHsoEphGkGQ++Cg=="
+}
