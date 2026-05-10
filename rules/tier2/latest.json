@@ -1,0 +1,386 @@
+{
+  "version": "2026.05.10",
+  "schema_version": 1,
+  "expires_at": "2026-08-10",
+  "global": {
+    "analytics_strip": [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+      "utm_id",
+      "fbclid",
+      "gclid",
+      "gbraid",
+      "wbraid",
+      "dclid",
+      "yclid",
+      "msclkid",
+      "ttclid",
+      "twclid",
+      "li_fat_id",
+      "rdt_cid",
+      "epik",
+      "vmcid",
+      "ScCid",
+      "_ga",
+      "_gl",
+      "_gid",
+      "_fpc",
+      "mc_eid",
+      "mc_cid",
+      "igshid",
+      "ref_src",
+      "oly_anon_id",
+      "oly_enc_id",
+      "vero_id",
+      "vero_conv",
+      "wickedid",
+      "s_kwcid",
+      "ef_id",
+      "hsa_cam",
+      "hsa_grp",
+      "hsa_mt",
+      "hsa_src",
+      "hsa_ad",
+      "hsa_acc",
+      "hsa_net",
+      "hsa_ver",
+      "hsa_la",
+      "hsa_ol",
+      "hsa_kw"
+    ],
+    "analytics_prefix": [
+      "utm_",
+      "hsa_",
+      "gads_",
+      "uls_",
+      "af_"
+    ]
+  },
+  "domains": {
+    "shopee.vn": {
+      "analytics": [
+        "xptdk",
+        "deep_and_web",
+        "publish_id",
+        "sp_atk",
+        "spm",
+        "credential_token",
+        "exp_group",
+        "gads_t_sig",
+        "mmp_pid",
+        "uls_trackid",
+        "smtt",
+        "is_from_webapp",
+        "share_channel_code",
+        "campaignCode",
+        "ciphertext",
+        "__mobile__"
+      ],
+      "affiliate": [
+        "af_siteid",
+        "pid",
+        "af_click_lookback",
+        "af_sub_siteid"
+      ],
+      "functional": [],
+      "label": "Shopee Affiliate"
+    },
+    "shopee.com": {
+      "analytics": [
+        "xptdk",
+        "deep_and_web",
+        "publish_id",
+        "sp_atk",
+        "spm",
+        "credential_token",
+        "exp_group",
+        "gads_t_sig",
+        "mmp_pid",
+        "uls_trackid",
+        "smtt",
+        "is_from_webapp",
+        "share_channel_code",
+        "campaignCode",
+        "ciphertext",
+        "__mobile__"
+      ],
+      "affiliate": [
+        "af_siteid",
+        "pid",
+        "af_click_lookback",
+        "af_sub_siteid"
+      ],
+      "functional": [],
+      "label": "Shopee Affiliate"
+    },
+    "lazada.vn": {
+      "analytics": [
+        "clickTrackInfo",
+        "spm",
+        "scm",
+        "search_query",
+        "pvid",
+        "acm",
+        "from",
+        "c",
+        "mp",
+        "trafficFrom",
+        "pa",
+        "ppcBuyer",
+        "search",
+        "abtest",
+        "aff_platform",
+        "aff_trace_key",
+        "freeshipping",
+        "priceCompare",
+        "ratingscore",
+        "location"
+      ],
+      "affiliate": [
+        "sub_aff_id",
+        "aff_short_key"
+      ],
+      "functional": [],
+      "label": "Lazada Partner"
+    },
+    "lazada.com": {
+      "analytics": [
+        "clickTrackInfo",
+        "spm",
+        "scm",
+        "search_query",
+        "pvid",
+        "acm",
+        "from",
+        "c",
+        "mp",
+        "trafficFrom",
+        "pa",
+        "ppcBuyer",
+        "search",
+        "abtest",
+        "aff_platform",
+        "aff_trace_key",
+        "freeshipping",
+        "priceCompare",
+        "ratingscore",
+        "location"
+      ],
+      "affiliate": [
+        "sub_aff_id",
+        "aff_short_key"
+      ],
+      "functional": [],
+      "label": "Lazada Partner"
+    },
+    "tiktok.com": {
+      "analytics": [
+        "_t",
+        "_r",
+        "is_from_webapp",
+        "sender_device",
+        "sender_web",
+        "share_app_id",
+        "share_link_id",
+        "share_item_id",
+        "is_copy_url",
+        "sec_uid",
+        "checksum",
+        "enter_from",
+        "enter_method",
+        "refer",
+        "sharer_language"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "youtube.com": {
+      "analytics": [
+        "si",
+        "feature",
+        "pp",
+        "kw",
+        "ab_channel"
+      ],
+      "affiliate": [],
+      "functional": [
+        "v",
+        "t",
+        "list",
+        "index"
+      ]
+    },
+    "facebook.com": {
+      "analytics": [
+        "fbclid",
+        "__tn__",
+        "__cft__",
+        "_rdr",
+        "mibextid",
+        "scmts_from",
+        "ref",
+        "refid",
+        "share_id",
+        "notif_id",
+        "notif_t",
+        "rdrhc",
+        "paipv",
+        "eav",
+        "comment_id"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "instagram.com": {
+      "analytics": [
+        "igsh",
+        "igshid",
+        "img_index",
+        "source",
+        "hl"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "twitter.com": {
+      "analytics": [
+        "ref_src",
+        "ref_url",
+        "s",
+        "t",
+        "twclid"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "x.com": {
+      "analytics": [
+        "ref_src",
+        "ref_url",
+        "s",
+        "t",
+        "twclid"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "tiki.vn": {
+      "analytics": [
+        "spid",
+        "src",
+        "attempt_id",
+        "seller_center_referrer",
+        "clickTrackInfo"
+      ],
+      "affiliate": [
+        "aff_sid",
+        "aff_type"
+      ],
+      "functional": [],
+      "label": "Tiki Affiliate"
+    },
+    "sendo.vn": {
+      "analytics": [
+        "source",
+        "medium",
+        "campaign_code",
+        "click_from"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "grab.com": {
+      "analytics": [
+        "source",
+        "medium",
+        "campaign"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "zalo.me": {
+      "analytics": [
+        "giession",
+        "src",
+        "ref"
+      ],
+      "affiliate": [],
+      "functional": []
+    },
+    "amazon.com": {
+      "analytics": [
+        "tag",
+        "linkCode",
+        "linkId",
+        "ref_",
+        "psc",
+        "smid",
+        "pd_rd_w",
+        "pd_rd_r",
+        "pf_rd_p",
+        "pf_rd_r",
+        "content-id",
+        "qid",
+        "sr",
+        "keywords",
+        "crid",
+        "sprefix",
+        "camp",
+        "creative"
+      ],
+      "affiliate": [],
+      "functional": [
+        "dp"
+      ]
+    },
+    "aliexpress.com": {
+      "analytics": [
+        "spm",
+        "scm",
+        "scm_id",
+        "scm-url",
+        "pvid",
+        "algo_pvid",
+        "srcSns",
+        "spreadType",
+        "bizType",
+        "social_params",
+        "aff_fcid",
+        "aff_fsk",
+        "aff_platform",
+        "aff_trace_key",
+        "terminal_id",
+        "pdp_npi",
+        "gatewayAda498",
+        "sk"
+      ],
+      "affiliate": [
+        "aff_short_key"
+      ],
+      "functional": []
+    }
+  },
+  "redirect_chains": {
+    "l.facebook.com/l.php": "u",
+    "lm.facebook.com/l.php": "u",
+    "out.reddit.com": "url",
+    "google.com/url": "q",
+    "youtube.com/redirect": "q",
+    "t.umblr.com/redirect": "z",
+    "gate.sc": "url"
+  },
+  "sacred_params": [
+    "v",
+    "id",
+    "q",
+    "u",
+    "url",
+    "p",
+    "t",
+    "dp"
+  ],
+  "signature": "dummy_signature"
+}
