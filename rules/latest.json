@@ -1,7 +1,7 @@
 {
-  "version": "2026.07.26",
+  "version": "2026.08.02",
   "schema_version": 1,
-  "expires_at": "2026-10-24",
+  "expires_at": "2026-10-31",
   "global": {
     "analytics_strip": [
       "243p",
