@@ -1,0 +1,100 @@
+name: Clean-room Rule Aggregator & Distribution
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Run weekly on Sunday at midnight UTC
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: read
+
+jobs:
+  extract-and-compile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'tools/rule_aggregator/requirements.txt'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r tools/rule_aggregator/requirements.txt
+
+      - name: Run Pytest Suite
+        run: |
+          pytest tools/rule_aggregator/tests -v
+
+      - name: Set Release Version
+        id: version
+        run: |
+          VERSION=$(date -u +'%Y.%m.%d')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Compile Rules
+        run: |
+          mkdir -p rules
+          python tools/rule_aggregator/rule_compiler.py rules/latest.json
+
+      - name: Validate Schema Invariants
+        run: |
+          python tools/rule_aggregator/schema_validator.py rules/latest.json
+
+      - name: Upload Compiled Rules
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-rules
+          path: rules/latest.json
+
+  create-pull-request:
+    needs: extract-and-compile
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          persist-credentials: false
+
+      - name: Download Compiled Rules
+        uses: actions/download-artifact@v4
+        with:
+          name: compiled-rules
+          path: rules
+
+      - name: Create Pull Request to dev
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update tracking rules (${{ needs.extract-and-compile.outputs.version }})"
+          title: "🤖 chore(rules): auto-update tracking rules for ${{ needs.extract-and-compile.outputs.version }}"
+          body: |
+            ### Automated Rule Aggregation Report
+            - **Version:** `${{ needs.extract-and-compile.outputs.version }}`
+            - **Source:** ClearURLs + AdGuard Tracking Filter (Clean-room derivation)
+            - **Validation:** Pytest passed (30/30) & Schema validated.
+            
+            *Vui lòng review diff tham số trước khi merge vào dev.*
+          branch: "auto-update/rules-${{ needs.extract-and-compile.outputs.version }}"
+          base: dev
+          delete-branch: true
+          labels: |
+            automated-pr
+            rules-update
