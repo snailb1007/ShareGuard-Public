@@ -52,9 +52,11 @@ def validate_ruleset(data: dict) -> list[str]:
     elif not all(isinstance(x, str) and x.strip() for x in data["sacred_params"]):
         errors.append("All elements in 'sacred_params' must be non-empty strings")
 
-    # 5. Global analytics strip invariant (must be list of non-empty strings)
-    if "global" not in data or not isinstance(data["global"], dict):
-        errors.append("Missing or invalid 'global' dictionary")
+    # 5. Global analytics invariants (global must be an object with list fields)
+    if "global" not in data:
+        errors.append("Missing required field 'global'")
+    elif not isinstance(data["global"], dict):
+        errors.append("'global' must be an object")
     else:
         global_obj = data["global"]
         if "analytics_strip" not in global_obj:
@@ -65,6 +67,11 @@ def validate_ruleset(data: dict) -> list[str]:
             errors.append("'global.analytics_strip' must contain at least 1 parameter")
         elif not all(isinstance(x, str) and x.strip() for x in global_obj["analytics_strip"]):
             errors.append("All elements in 'global.analytics_strip' must be non-empty strings")
+
+        if "analytics_prefix" not in global_obj:
+            errors.append("Missing required field 'global.analytics_prefix'")
+        elif not isinstance(global_obj["analytics_prefix"], list):
+            errors.append("'global.analytics_prefix' must be a list")
 
     # 6. Invariant: Disjointness between sacred_params and global.analytics_strip
     if (
@@ -85,6 +92,25 @@ def validate_ruleset(data: dict) -> list[str]:
         errors.append("'shortener_domains' must be a list")
     elif not all(isinstance(x, str) and x.strip() for x in data["shortener_domains"]):
         errors.append("All elements in 'shortener_domains' must be non-empty strings")
+
+    # 8. Shortener exclusions invariant (must be list of non-empty strings)
+    if "shortener_excluded" not in data:
+        errors.append("Missing required field 'shortener_excluded'")
+    elif not isinstance(data["shortener_excluded"], list):
+        errors.append("'shortener_excluded' must be a list")
+    elif not all(isinstance(x, str) and x.strip() for x in data["shortener_excluded"]):
+        errors.append("All elements in 'shortener_excluded' must be non-empty strings")
+
+    # 9. Domain and redirect chain invariants (must be JSON objects)
+    if "domains" not in data:
+        errors.append("Missing required field 'domains'")
+    elif not isinstance(data["domains"], dict):
+        errors.append("'domains' must be an object")
+
+    if "redirect_chains" not in data:
+        errors.append("Missing required field 'redirect_chains'")
+    elif not isinstance(data["redirect_chains"], dict):
+        errors.append("'redirect_chains' must be an object")
 
     return errors
 

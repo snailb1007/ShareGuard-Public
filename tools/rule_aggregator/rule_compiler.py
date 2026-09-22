@@ -20,9 +20,13 @@ OUTPUT_FILENAME = "latest.json"
 
 
 def load_shorteners(path: Path = SHORTENERS_PATH) -> dict:
-    """Load shortener domains and exclusions."""
+    """Load shortener domains and exclusions.
+
+    Raises FileNotFoundError when the configuration file is missing; a
+    configuration file that exists may still carry empty lists.
+    """
     if not path.exists():
-        return {"shortener_domains": [], "shortener_excluded": []}
+        raise FileNotFoundError(f"Shortener configuration not found: {path}")
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -70,9 +74,9 @@ def compile_rules(output_path: str | None = None) -> dict:
     # Sort for deterministic output
     sorted_params = sorted(filtered_params)
 
-    # Build version and expiry
+    # Build version and expiry: workflow-provided VERSION wins, UTC date is the fallback
     now = datetime.datetime.now(datetime.timezone.utc)
-    version = now.strftime("%Y.%m.%d")
+    version = os.environ.get("VERSION") or now.strftime("%Y.%m.%d")
     expires_at = (now + datetime.timedelta(days=90)).strftime("%Y-%m-%d")
 
     # Construct ShareGuard RuleSet

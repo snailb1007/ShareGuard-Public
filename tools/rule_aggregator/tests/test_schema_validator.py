@@ -1,17 +1,21 @@
 """Tests for schema_validator.py — verifies invariant enforcement."""
-
+import datetime
 import json
 from pathlib import Path
 
 from schema_validator import validate_ruleset, validate_file
 from rule_compiler import compile_rules
 
+# Dynamically generated future date so tests never expire
+FUTURE_DATE = (datetime.date.today() + datetime.timedelta(days=90)).isoformat()
+
 
 def test_valid_ruleset():
+    """A complete, well-formed RuleSet produces no validation errors."""
     valid_data = {
         "version": "2026.09.12",
         "schema_version": 1,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {
             "analytics_strip": ["utm_source", "fbclid"],
             "analytics_prefix": [],
@@ -27,9 +31,10 @@ def test_valid_ruleset():
 
 
 def test_missing_version():
+    """A RuleSet without a 'version' field is reported as invalid."""
     data = {
         "schema_version": 1,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {"analytics_strip": ["utm_source"]},
         "sacred_params": ["v"],
         "shortener_domains": [],
@@ -39,10 +44,11 @@ def test_missing_version():
 
 
 def test_invalid_schema_version():
+    """An unsupported 'schema_version' value is reported as invalid."""
     data = {
         "version": "2026.09.12",
         "schema_version": 2,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {"analytics_strip": ["utm_source"]},
         "sacred_params": ["v"],
         "shortener_domains": [],
@@ -52,10 +58,11 @@ def test_invalid_schema_version():
 
 
 def test_empty_sacred_params():
+    """An empty 'sacred_params' list is reported as invalid."""
     data = {
         "version": "2026.09.12",
         "schema_version": 1,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {"analytics_strip": ["utm_source"]},
         "sacred_params": [],
         "shortener_domains": [],
@@ -65,10 +72,11 @@ def test_empty_sacred_params():
 
 
 def test_empty_analytics_strip():
+    """An empty 'global.analytics_strip' list is reported as invalid."""
     data = {
         "version": "2026.09.12",
         "schema_version": 1,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {"analytics_strip": []},
         "sacred_params": ["v"],
         "shortener_domains": [],
@@ -78,6 +86,7 @@ def test_empty_analytics_strip():
 
 
 def test_expired_expires_at():
+    """A past 'expires_at' date is reported as invalid."""
     data = {
         "version": "2026.09.12",
         "schema_version": 1,
@@ -91,6 +100,7 @@ def test_expired_expires_at():
 
 
 def test_invalid_expires_at_format():
+    """A non ISO-8601 'expires_at' value is reported as invalid."""
     data = {
         "version": "2026.09.12",
         "schema_version": 1,
@@ -104,10 +114,11 @@ def test_invalid_expires_at_format():
 
 
 def test_non_string_sacred_params():
+    """Non-string entries in 'sacred_params' are reported as invalid."""
     data = {
         "version": "2026.09.12",
         "schema_version": 1,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {"analytics_strip": ["utm_source"]},
         "sacred_params": ["v", 123],
         "shortener_domains": [],
@@ -117,10 +128,11 @@ def test_non_string_sacred_params():
 
 
 def test_non_string_analytics_strip():
+    """Non-string entries in 'global.analytics_strip' are reported as invalid."""
     data = {
         "version": "2026.09.12",
         "schema_version": 1,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {"analytics_strip": ["utm_source", {}]},
         "sacred_params": ["v"],
         "shortener_domains": [],
@@ -130,10 +142,11 @@ def test_non_string_analytics_strip():
 
 
 def test_disjoint_sacred_and_analytics_strip():
+    """Parameters in both 'sacred_params' and 'analytics_strip' trigger a conflict error."""
     data = {
         "version": "2026.09.12",
         "schema_version": 1,
-        "expires_at": "2026-12-11",
+        "expires_at": FUTURE_DATE,
         "global": {"analytics_strip": ["utm_source", "conflict_param"]},
         "sacred_params": ["v", "conflict_param"],
         "shortener_domains": [],
@@ -143,10 +156,12 @@ def test_disjoint_sacred_and_analytics_strip():
 
 
 def test_validate_file_not_found(tmp_path):
+    """Validating a nonexistent file returns False."""
     assert validate_file(tmp_path / "nonexistent.json") is False
 
 
 def test_validate_file_invalid_json(tmp_path):
+    """Validating a file with malformed JSON returns False."""
     bad_json = tmp_path / "bad.json"
     bad_json.write_text("{not valid json}")
     assert validate_file(bad_json) is False
@@ -166,7 +181,6 @@ def test_validate_compiled_output(mocker, tmp_path):
         "rule_compiler.load_ignore_list",
         return_value={"v", "id"},
     )
-
     out_file = tmp_path / "latest.json"
     compile_rules(output_path=str(out_file))
 

@@ -6,12 +6,17 @@ on:
   push:
     branches: [ dev ]
 
+permissions:
+  contents: read
+
 jobs:
   test-and-validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -31,8 +36,8 @@ jobs:
 
       - name: Validate rules/latest.json Schema
         run: |
-          if [ -f rules/latest.json ]; then
-            python tools/rule_aggregator/schema_validator.py rules/latest.json
-          else
-            echo "Notice: rules/latest.json not found to validate"
+          if [ ! -f rules/latest.json ]; then
+            echo "Error: rules/latest.json is required but was not found." >&2
+            exit 1
           fi
+          python tools/rule_aggregator/schema_validator.py rules/latest.json

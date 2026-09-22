@@ -1,7 +1,9 @@
+"""Tests for the ClearURLs and AdGuard clean-room extractors."""
 from extractors.clearurls_extractor import extract_clearurls_data
 from extractors.adguard_extractor import extract_adguard_data
 
 def test_extract_clearurls_data(mocker):
+    """Parenthesized literal rules are unwrapped into plain parameter names."""
     mock_data = {
         "providers": {
             "Amazon": {
@@ -25,6 +27,7 @@ def test_extract_clearurls_data(mocker):
 
 
 def test_extract_clearurls_empty_providers(mocker):
+    """A payload with no providers extracts zero parameters."""
     mocker.patch('requests.get').return_value.json.return_value = {"providers": {}}
     result = extract_clearurls_data()
     assert result['sacred_params'] == []
@@ -32,6 +35,7 @@ def test_extract_clearurls_empty_providers(mocker):
 
 
 def test_extract_clearurls_missing_rules_key(mocker):
+    """Providers without a 'rules' key are skipped without error."""
     mock_data = {
         "providers": {
             "NoRules": {
@@ -45,6 +49,7 @@ def test_extract_clearurls_missing_rules_key(mocker):
 
 
 def test_extract_clearurls_dedup_across_providers(mocker):
+    """The same parameter from multiple providers is emitted only once."""
     mock_data = {
         "providers": {
             "ProviderA": {"rules": ["(utm_source)"]},
@@ -57,6 +62,7 @@ def test_extract_clearurls_dedup_across_providers(mocker):
 
 
 def test_extract_clearurls_strips_single_char(mocker):
+    """Single-character parameter names are excluded from the output."""
     mock_data = {
         "providers": {
             "Provider": {"rules": ["(x)"]},
@@ -70,6 +76,7 @@ def test_extract_clearurls_strips_single_char(mocker):
 # AdGuard extractor tests
 
 def test_extract_adguard_data(mocker):
+    """$removeparam lines yield parameters; network rules are not extracted."""
     mock_text = "$removeparam=utm_source\n||tracker.com^$third-party\n$removeparam=fbclid"
     mocker.patch('requests.get').return_value.text = mock_text
 
@@ -81,6 +88,7 @@ def test_extract_adguard_data(mocker):
 
 
 def test_extract_adguard_comments_ignored(mocker):
+    """Comment lines starting with '!' are ignored during extraction."""
     mock_text = "! This is a comment with $removeparam=should_be_ignored\n$removeparam=real_param"
     mocker.patch('requests.get').return_value.text = mock_text
 
@@ -91,6 +99,7 @@ def test_extract_adguard_comments_ignored(mocker):
 
 
 def test_extract_adguard_empty_input(mocker):
+    """An empty filter list extracts zero parameters."""
     mocker.patch('requests.get').return_value.text = ""
 
     result = extract_adguard_data()
@@ -100,6 +109,7 @@ def test_extract_adguard_empty_input(mocker):
 
 
 def test_extract_adguard_complex_removeparam(mocker):
+    """Regex-style removeparam values are rejected; literals are kept."""
     mock_text = "$removeparam=/regex_pattern/\n$removeparam=simple_param"
     mocker.patch('requests.get').return_value.text = mock_text
 
